@@ -19,9 +19,27 @@ import fooddelivery.domain.*;
 @Transactional
 public class PolicyHandler{
     @Autowired OrderRepository orderRepository;
+    @Autowired PaymentRepository paymentRepository;
     
     @StreamListener(KafkaProcessor.INPUT)
     public void whatever(@Payload String eventString){}
+
+    @StreamListener(value=KafkaProcessor.INPUT, condition="headers['type']=='OrderPlaced'")
+    public void wheneverOrderPlaced_Pay(@Payload OrderPlaced orderPlaced){
+
+        OrderPlaced event = orderPlaced;
+        System.out.println("\n\n##### listener Pay : " + orderPlaced + "\n\n");
+
+
+        
+
+        // Sample Logic //
+        Payment.pay(event);
+        
+
+        
+
+    }
 
 }
 

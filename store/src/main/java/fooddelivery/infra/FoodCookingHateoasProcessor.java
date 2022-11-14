@@ -11,6 +11,9 @@ public class FoodCookingHateoasProcessor implements RepresentationModelProcessor
 
     @Override
     public EntityModel<FoodCooking> process(EntityModel<FoodCooking> model) {
+        model.add(Link.of(model.getRequiredLink("self").getHref() + "/finishcooking").withRel("finishcooking"));
+        model.add(Link.of(model.getRequiredLink("self").getHref() + "/accept").withRel("accept"));
+        model.add(Link.of(model.getRequiredLink("self").getHref() + "/startcooking").withRel("startcooking"));
 
         
         return model;

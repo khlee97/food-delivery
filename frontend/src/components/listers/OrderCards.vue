@@ -68,8 +68,11 @@
             me.values = temp.data._embedded.orders;
             
             me.newValue = {
-                'status': '',
+                'foodId': '',
+                'options': [],
                 'address': '',
+                'customerId': '',
+                'storeId': '',
             }
         },
         methods:{

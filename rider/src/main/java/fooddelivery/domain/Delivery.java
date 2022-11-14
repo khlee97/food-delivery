@@ -1,6 +1,6 @@
 package fooddelivery.domain;
 
-import fooddelivery.domain.FoodPicked;
+import fooddelivery.domain.Delivered;
 import fooddelivery.RiderApplication;
 import javax.persistence.*;
 import java.util.List;
@@ -27,12 +27,6 @@ public class Delivery  {
     
     
     
-    private Long orderId;
-    
-    
-    
-    
-    
     private String status;
     
     
@@ -40,13 +34,19 @@ public class Delivery  {
     
     
     private String address;
+    
+    
+    
+    
+    
+    private String orderId;
 
     @PostPersist
     public void onPostPersist(){
 
 
-        FoodPicked foodPicked = new FoodPicked(this);
-        foodPicked.publishAfterCommit();
+        Delivered delivered = new Delivered(this);
+        delivered.publishAfterCommit();
 
     }
 
@@ -57,6 +57,11 @@ public class Delivery  {
 
 
 
+    public void pickFood(){
+        FoodPicked foodPicked = new FoodPicked(this);
+        foodPicked.publishAfterCommit();
+
+    }
 
     public static void copyOrderInfo(OrderPlaced orderPlaced){
 

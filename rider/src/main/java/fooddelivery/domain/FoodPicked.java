@@ -10,9 +10,9 @@ import lombok.*;
 public class FoodPicked extends AbstractEvent {
 
     private Long id;
-    private Long orderId;
     private String status;
     private String address;
+    private String orderId;
 
     public FoodPicked(Delivery aggregate){
         super(aggregate);

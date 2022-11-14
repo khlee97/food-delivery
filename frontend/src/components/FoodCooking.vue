@@ -17,8 +17,11 @@
         </v-card-title >
 
         <v-card-text>
-            <Number label="OrderId" v-model="value.orderId" :editMode="editMode"/>
             <String label="Status" v-model="value.status" :editMode="editMode"/>
+            <String label="FoodId" v-model="value.foodId" :editMode="editMode"/>
+            <String label="OrderId" v-model="value.orderId" :editMode="editMode"/>
+            <String label="Options" v-model="value.options" :editMode="editMode"/>
+            <String label="StoreId" v-model="value.storeId" :editMode="editMode"/>
         </v-card-text>
 
         <v-card-actions>
@@ -58,6 +61,36 @@
         </v-card-actions>
         <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn
+                    v-if="!editMode"
+                    color="deep-purple lighten-2"
+                    text
+                    @click="finishCooking"
+            >
+                FinishCooking
+            </v-btn>
+            <v-btn
+                    v-if="!editMode"
+                    color="deep-purple lighten-2"
+                    text
+                    @click="openAccept"
+            >
+                Accept
+            </v-btn>
+            <v-dialog v-model="acceptDiagram" width="500">
+                <AcceptCommand
+                        @closeDialog="closeAccept"
+                        @accept="accept"
+                ></AcceptCommand>
+            </v-dialog>
+            <v-btn
+                    v-if="!editMode"
+                    color="deep-purple lighten-2"
+                    text
+                    @click="startCooking"
+            >
+                StartCooking
+            </v-btn>
         </v-card-actions>
 
         <v-snackbar
@@ -95,6 +128,7 @@
                 timeout: 5000,
                 text: ''
             },
+            acceptDiagram: false,
         }),
         computed:{
         },
@@ -188,6 +222,70 @@
             },
             change(){
                 this.$emit('input', this.value);
+            },
+            async finishCooking() {
+                try {
+                    if(!this.offline) {
+                        var temp = await axios.put(axios.fixUrl(this.value._links['finishcooking'].href))
+                        for(var k in temp.data) {
+                            this.value[k]=temp.data[k];
+                        }
+                    }
+
+                    this.editMode = false;
+                } catch(e) {
+                    this.snackbar.status = true
+                    if(e.response && e.response.data.message) {
+                        this.snackbar.text = e.response.data.message
+                    } else {
+                        this.snackbar.text = e
+                    }
+                }
+            },
+            async accept(params) {
+                try {
+                    if(!this.offline) {
+                        var temp = await axios.put(axios.fixUrl(this.value._links['accept'].href), params)
+                        for(var k in temp.data) {
+                            this.value[k]=temp.data[k];
+                        }
+                    }
+
+                    this.editMode = false;
+                    this.closeAccept();
+                } catch(e) {
+                    this.snackbar.status = true
+                    if(e.response && e.response.data.message) {
+                        this.snackbar.text = e.response.data.message
+                    } else {
+                        this.snackbar.text = e
+                    }
+                }
+            },
+            openAccept() {
+                this.acceptDiagram = true;
+            },
+            closeAccept() {
+                this.acceptDiagram = false;
+            },
+            async startCooking() {
+                try {
+                    if(!this.offline) {
+                        var temp = await axios.put(axios.fixUrl(this.value._links['startcooking'].href))
+                        for(var k in temp.data) {
+                            this.value[k]=temp.data[k];
+                        }
+                    }
+
+                    this.editMode = false;
+                } catch(e) {
+                    this.snackbar.status = true
+                    if(e.response && e.response.data.message) {
+                        this.snackbar.text = e.response.data.message
+                    } else {
+                        this.snackbar.text = e
+                    }
+                }
             },
         },
     }

@@ -24,16 +24,33 @@ public class PolicyHandler{
     public void whatever(@Payload String eventString){}
 
     @StreamListener(value=KafkaProcessor.INPUT, condition="headers['type']=='OrderPlaced'")
-    public void wheneverOrderPlaced_AcceptOrder(@Payload OrderPlaced orderPlaced){
+    public void wheneverOrderPlaced_CopyOrderInfo(@Payload OrderPlaced orderPlaced){
 
         OrderPlaced event = orderPlaced;
-        System.out.println("\n\n##### listener AcceptOrder : " + orderPlaced + "\n\n");
+        System.out.println("\n\n##### listener CopyOrderInfo : " + orderPlaced + "\n\n");
 
 
         
 
         // Sample Logic //
-        FoodCooking.acceptOrder(event);
+        FoodCooking.copyOrderInfo(event);
+        
+
+        
+
+    }
+
+    @StreamListener(value=KafkaProcessor.INPUT, condition="headers['type']=='Paid'")
+    public void wheneverPaid_UpdateStatus(@Payload Paid paid){
+
+        Paid event = paid;
+        System.out.println("\n\n##### listener UpdateStatus : " + paid + "\n\n");
+
+
+        
+
+        // Sample Logic //
+        FoodCooking.updateStatus(event);
         
 
         

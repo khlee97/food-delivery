@@ -67,8 +67,11 @@
             headers: 
                 [
                     { text: "id", value: "id" },
-                    { text: "orderId", value: "orderId" },
                     { text: "status", value: "status" },
+                    { text: "foodId", value: "foodId" },
+                    { text: "orderId", value: "orderId" },
+                    { text: "options", value: "options" },
+                    { text: "storeId", value: "storeId" },
                 ],
             foodCooking : [],
             newValue: {},
@@ -86,8 +89,11 @@
             this.values = temp.data._embedded.foodcookings;
 
             this.newValue = {
-                'orderId': 0,
                 'status': '',
+                'foodId': '',
+                'orderId': '',
+                'options': [],
+                'storeId': '',
             }
         },
         methods: {
